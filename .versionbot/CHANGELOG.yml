@@ -1,4 +1,28 @@
 - commits:
+    - subject: empty
+      hash: a74a8810810d8a14f6b3f6d71db9d4230a103474
+      body: |
+        * testing balena-cli CI pipeline
+      footer:
+        Changelog-entry: empty
+        changelog-entry: empty
+        Change-type: patch
+        change-type: patch
+      author: ab77
+      nested: []
+    - subject: empty
+      hash: b897bf054b96bab61b388fd6014646ac48d16f88
+      body: ''
+      footer:
+        Changelog-entry: empty
+        changelog-entry: empty
+        Change-type: patch
+        change-type: patch
+      author: ab77
+      nested: []
+  version: 12.28.4
+  date: 2020-11-27T15:01:21.340Z
+- commits:
     - subject: Add ability to disable analytics for performance testing
       hash: 950d173d276f97cb3fcfd4bb9b578b5888572a69
       body: ''
