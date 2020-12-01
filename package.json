@@ -1,6 +1,6 @@
 {
   "name": "balena-cli",
-  "version": "12.29.0",
+  "version": "12.28.0",
   "description": "The official balena Command Line Interface",
   "main": "./build/app.js",
   "homepage": "https://github.com/balena-io/balena-cli",
@@ -61,13 +61,13 @@
     "test:shrinkwrap": "ts-node --transpile-only automation/run.ts test-shrinkwrap",
     "test:source": "cross-env BALENA_CLI_TEST_TYPE=source mocha",
     "test:standalone": "npm run build:standalone && npm run test:standalone:fast",
-    "test:standalone:fast": "cross-env BALENA_CLI_TEST_TYPE=standalone mocha --config .mocharc-standalone.js",
+    "test:standalone:fast": "cross-env BALENA_CLI_TEST_TYPE=standalone mocha",
     "test:fast": "npm run build:fast && npm run test:source",
     "test:only": "npm run build:fast && cross-env BALENA_CLI_TEST_TYPE=source mocha \"tests/**/${npm_config_test}.spec.ts\"",
     "catch-uncommitted": "ts-node --transpile-only automation/run.ts catch-uncommitted",
     "ci": "npm run test && npm run catch-uncommitted",
     "watch": "gulp watch",
-    "lint": "balena-lint -e ts -e js --typescript --fix automation/ lib/ typings/ tests/ bin/balena bin/balena-dev gulpfile.js .mocharc.js .mocharc-standalone.js",
+    "lint": "balena-lint -e ts -e js --typescript --fix automation/ lib/ typings/ tests/ bin/balena bin/balena-dev gulpfile.js",
     "update": "ts-node --transpile-only ./automation/update-module.ts",
     "prepare": "echo {} > bin/.fast-boot.json",
     "prepublishOnly": "npm run build"
@@ -90,6 +90,13 @@
     "hooks": {
       "pre-commit": "node automation/check-npm-version.js && node automation/check-doc.js"
     }
+  },
+  "mocha": {
+    "reporter": "spec",
+    "require": "ts-node/register/transpile-only",
+    "file": "./tests/config-tests",
+    "timeout": 12000,
+    "_": "tests/**/*.spec.ts"
   },
   "oclif": {
     "bin": "balena",
@@ -135,7 +142,7 @@
     "@types/klaw": "^3.0.1",
     "@types/lodash": "^4.14.159",
     "@types/mixpanel": "^2.14.2",
-    "@types/mocha": "^8.0.4",
+    "@types/mocha": "^5.2.7",
     "@types/mock-require": "^2.0.0",
     "@types/moment-duration-format": "^2.2.2",
     "@types/net-keepalive": "^0.4.1",
@@ -149,7 +156,7 @@
     "@types/rewire": "^2.5.28",
     "@types/rimraf": "^3.0.0",
     "@types/shell-escape": "^0.2.0",
-    "@types/sinon": "^9.0.8",
+    "@types/sinon": "^9.0.4",
     "@types/split": "^1.0.0",
     "@types/stream-to-promise": "2.2.0",
     "@types/tar-stream": "^2.1.0",
@@ -173,15 +180,15 @@
     "intercept-stdout": "^0.1.2",
     "jsonwebtoken": "^8.5.1",
     "mkdirp": "^0.5.5",
-    "mocha": "^8.2.1",
+    "mocha": "^6.2.3",
     "mock-require": "^3.0.3",
     "nock": "^12.0.3",
     "parse-link-header": "~1.0.1",
     "pkg": "^4.4.9",
     "publish-release": "^1.6.1",
-    "rewire": "^5.0.0",
+    "rewire": "^4.0.1",
     "simple-git": "^1.132.0",
-    "sinon": "^9.2.1",
+    "sinon": "^9.0.3",
     "ts-node": "^8.10.2",
     "typescript": "^4.0.2"
   },
@@ -209,7 +216,7 @@
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "chalk": "^3.0.0",
-    "chokidar": "^3.4.3",
+    "chokidar": "^3.3.1",
     "cli-truncate": "^2.1.0",
     "color-hash": "^1.0.3",
     "columnify": "^1.5.2",
