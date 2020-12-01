@@ -2397,6 +2397,15 @@ Consider .gitignore files in addition to the .dockerignore file. This reverts
 to the CLI v11 behavior/implementation (deprecated) if compatibility is
 required until your project can be adapted.
 
+#### -B, --buildArg BUILDARG
+
+Set a build-time variable (eg. "-B 'ARG=value'"). Can be specified multiple times.
+Build arguments can be applied to individual services by adding their service name
+before the argument, separated by a colon, e.g:
+	--buildArg main:MY_ENV=value
+Note that if the service name cannot be found in the composition, the entire
+left hand side of the = character will be treated as the variable name.
+
 # Settings
 
 ## settings

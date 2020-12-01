@@ -65,9 +65,14 @@ export interface DeviceDeployOptions {
 	system: boolean;
 	env: string[];
 	convertEol: boolean;
+	buildArg: string[];
 }
 
 interface ParsedEnvironment {
+	[serviceName: string]: { [key: string]: string };
+}
+
+export interface ParsedBuildArguments {
 	[serviceName: string]: { [key: string]: string };
 }
 
@@ -102,6 +107,58 @@ async function environmentFromInput(
 			if (!(match[1] in ret)) {
 				logger.logDebug(
 					`Warning: Cannot find a service with name ${match[1]}. Treating the string as part of the environment variable name.`,
+				);
+				match[2] = `${match[1]}:${match[2]}`;
+			} else {
+				service = match[1];
+			}
+		}
+
+		if (service != null) {
+			ret[service][match[2]] = match[3];
+		} else {
+			for (const serviceName of serviceNames) {
+				ret[serviceName][match[2]] = match[3];
+			}
+		}
+	}
+
+	return ret;
+}
+
+async function buildArgumentsFromInput(
+	buildArgs: string[],
+	serviceNames: string[],
+	logger: Logger,
+): Promise<ParsedBuildArguments> {
+	const { exitWithExpectedError } = await import('../../errors');
+	// A normal environment variable regex, with an added part
+	// to find a colon followed servicename at the start
+	const varRegex = /^(?:([^\s:]+):)?([^\s]+?)=(.*)$/;
+
+	const ret: ParsedBuildArguments = {};
+	// Populate the object with the servicenames, as it
+	// also means that we can do a fast lookup of whether a
+	// service exists
+	for (const service of serviceNames) {
+		ret[service] = {};
+	}
+
+	for (const buildArg of buildArgs) {
+		const maybeMatch = buildArg.match(varRegex);
+		if (maybeMatch == null) {
+			exitWithExpectedError(
+				`Unable to parse build argument variable: ${buildArg}`,
+			);
+		}
+		const match = maybeMatch!;
+		let service: string | undefined;
+		if (match[1]) {
+			// This is for a service, we check that it actually
+			// exists
+			if (!(match[1] in ret)) {
+				logger.logDebug(
+					`Warning: Cannot find a service with name ${match[1]}. Treating the string as part of the build argument variable name.`,
 				);
 				match[2] = `${match[1]}:${match[2]}`;
 			} else {
@@ -210,6 +267,11 @@ export async function deployToDevice(opts: DeviceDeployOptions): Promise<void> {
 	if (!opts.nolive) {
 		buildLogs = {};
 	}
+	const buildArgs = await buildArgumentsFromInput(
+		opts.buildArg,
+		Object.getOwnPropertyNames(project.composition.services),
+		globalLogger,
+	);
 	const buildTasks = await performBuilds(
 		project.composition,
 		tarStream,
@@ -218,6 +280,7 @@ export async function deployToDevice(opts: DeviceDeployOptions): Promise<void> {
 		globalLogger,
 		opts,
 		buildLogs,
+		buildArgs,
 	);
 
 	const envs = await environmentFromInput(
@@ -310,6 +373,7 @@ export async function performBuilds(
 	logger: Logger,
 	opts: DeviceDeployOptions,
 	buildLogs?: Dictionary<string>,
+	buildArgs?: ParsedBuildArguments,
 ): Promise<BuildTask[]> {
 	const multibuild = await import('resin-multibuild');
 
@@ -330,7 +394,7 @@ export async function performBuilds(
 	);
 
 	logger.logDebug('Probing remote daemon for cache images');
-	await assignDockerBuildOpts(docker, buildTasks, opts);
+	await assignDockerBuildOpts(docker, buildTasks, opts, buildArgs);
 
 	// If we're passed a build logs object make sure to set it
 	// up properly
@@ -443,8 +507,13 @@ export async function rebuildSingleTask(
 	if (task == null) {
 		throw new Error(`Could not find build task for service ${serviceName}`);
 	}
+	const buildArgs = await buildArgumentsFromInput(
+		opts.buildArg,
+		Object.getOwnPropertyNames(composition.services),
+		globalLogger,
+	);
 
-	await assignDockerBuildOpts(docker, [task], opts);
+	await assignDockerBuildOpts(docker, [task], opts, buildArgs);
 	await assignOutputHandlers([task], logger, logHandler);
 
 	const [localImage] = await multibuild.performBuilds(
@@ -508,6 +577,7 @@ async function assignDockerBuildOpts(
 	docker: Docker,
 	buildTasks: BuildTask[],
 	opts: DeviceDeployOptions,
+	buildArgs?: ParsedBuildArguments,
 ): Promise<void> {
 	// Get all of the images on the remote docker daemon, so
 	// that we can use all of them for cache
@@ -517,6 +587,9 @@ async function assignDockerBuildOpts(
 
 	await Promise.all(
 		buildTasks.map(async (task: BuildTask) => {
+			if (buildArgs && buildArgs[task.serviceName]) {
+				task.args = _.merge(task.args, buildArgs[task.serviceName]);
+			}
 			task.dockerOpts = {
 				cachefrom: images,
 				labels: {
