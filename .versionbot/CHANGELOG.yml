@@ -1,4 +1,17 @@
 - commits:
+    - subject: Add --buildArg support for local push
+      hash: 717fc29bda0d3f6d5734415ee036070f056dd9e1
+      body: ''
+      footer:
+        Change-type: minor
+        change-type: minor
+        Signed-off-by: Josh Bowling <josh@balena.io>
+        signed-off-by: Josh Bowling <josh@balena.io>
+      author: Josh Bowling
+      nested: []
+  version: 12.29.0
+  date: 2020-12-01T04:47:31.449Z
+- commits:
     - subject: Add ability to disable analytics for performance testing
       hash: 950d173d276f97cb3fcfd4bb9b578b5888572a69
       body: ''
