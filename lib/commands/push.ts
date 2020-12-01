@@ -46,6 +46,7 @@ interface FlagsDef {
 	'convert-eol'?: boolean;
 	'noconvert-eol'?: boolean;
 	'multi-dockerignore'?: boolean;
+	buildArg?: string[];
 	help: void;
 }
 
@@ -224,6 +225,17 @@ export default class PushCmd extends Command {
 			char: 'g',
 			exclusive: ['multi-dockerignore'],
 		}),
+		buildArg: flags.string({
+			description: stripIndent`
+				Set a build-time variable (eg. "-B \'ARG=value\'"). Can be specified multiple times.
+				Build arguments can be applied to individual services by adding their service name
+				before the argument, separated by a colon, e.g:
+					--buildArg main:MY_ENV=value
+				Note that if the service name cannot be found in the composition, the entire
+				left hand side of the = character will be treated as the variable name.`,
+			char: 'B',
+			multiple: true,
+		}),
 		help: cf.help,
 	};
 
@@ -262,7 +274,13 @@ export default class PushCmd extends Command {
 				const remote = await import('../utils/remote-build');
 
 				// Check for invalid options
-				const localOnlyOptions = ['nolive', 'service', 'system', 'env'];
+				const localOnlyOptions = [
+					'nolive',
+					'service',
+					'system',
+					'env',
+					'buildArg',
+				];
 
 				localOnlyOptions.forEach((opt) => {
 					// @ts-ignore : Not sure why typescript wont let me do this?
@@ -326,6 +344,7 @@ export default class PushCmd extends Command {
 						system: options.system || false,
 						env: options.env || [],
 						convertEol,
+						buildArg: options.buildArg || [],
 					});
 				} catch (e) {
 					const { BuildError } = await import('../utils/device/errors');

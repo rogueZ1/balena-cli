@@ -179,8 +179,9 @@ export class LivepushManager {
 					stageImages: this.imageIds[serviceName],
 					docker: this.docker,
 				});
-				const buildVars = buildTask.buildMetadata.getBuildVarsForService(
-					buildTask.serviceName,
+				const buildVars = _.merge(
+					buildTask.buildMetadata.getBuildVarsForService(buildTask.serviceName),
+					buildTask.args,
 				);
 				if (!_.isEmpty(buildVars)) {
 					livepush.setBuildArgs(buildVars);
