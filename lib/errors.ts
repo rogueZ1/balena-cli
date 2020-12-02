@@ -140,10 +140,14 @@ const messages: {
 	BalenaExpiredToken: () => stripIndent`
 		Looks like the session token has expired.
 		Try logging in again with the "balena login" command.`,
+
+	BalenaAmbiguousDevice: () => stripIndent`
+		Error: Multiple devices found whose UUID starts with the provided UUID.`,
 };
 
 const EXPECTED_ERROR_REGEXES = [
 	/^BalenaAmbiguousApplication/, // balena-sdk
+	/^BalenaAmbiguousDevice/, // balena-sdk
 	/^BalenaApplicationNotFound/, // balena-sdk
 	/^BalenaDeviceNotFound/, // balena-sdk
 	/^BalenaExpiredToken/, // balena-sdk

@@ -17,11 +17,9 @@
 
 import { flags } from '@oclif/command';
 import type { IArg } from '@oclif/parser/lib/args';
-import { BalenaAmbiguousDevice } from 'balena-errors';
 import Command from '../../command';
 import * as cf from '../../utils/common-flags';
 import { getBalenaSdk, stripIndent } from '../../utils/lazy';
-import type * as BalenaSdk from 'balena-sdk';
 
 interface FlagsDef {
 	yes?: boolean;
@@ -82,26 +80,7 @@ Are you sure you want to deactivate device ${uuid} ?`;
 
 		// Confirm
 		await patterns.confirm(!!options.yes, deactivationWarning);
-
 		// Deactivate
-		try {
-			const { id } = await balena.models.device.get(uuid, { $select: 'id' });
-			await balena.pine.patch<BalenaSdk.Device>({
-				resource: 'device',
-				body: {
-					is_active: false,
-				},
-				id,
-			});
-		} catch (err) {
-			if (err instanceof BalenaAmbiguousDevice) {
-				console.info(
-					`Error: Multiple devices found that their uuid starts with ${uuid}`,
-				);
-			} else {
-				console.info(`${err.message}, uuid: ${uuid}`);
-			}
-			process.exitCode = 1;
-		}
+		await balena.models.device.deactivate(uuid);
 	}
 }
