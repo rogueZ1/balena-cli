@@ -91,11 +91,7 @@ Are you sure you want to deactivate device ${uuid} ?`;
 				body: {
 					is_active: false,
 				},
-				options: {
-					$filter: {
-						id,
-					},
-				},
+				id,
 			});
 		} catch (err) {
 			if (err instanceof BalenaAmbiguousDevice) {
