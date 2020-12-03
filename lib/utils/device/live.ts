@@ -37,7 +37,7 @@ import {
 } from './deploy';
 import { BuildError } from './errors';
 import { getServiceColourFn } from './logs';
-import { delay } from '../helpers';
+import { addSIGINTHandler, delay } from '../helpers';
 
 // How often do we want to check the device state
 // engine has settled (delay in ms)
@@ -221,7 +221,7 @@ export class LivepushManager {
 		}
 
 		// Setup cleanup handlers for the device
-		process.once('SIGINT', async () => {
+		addSIGINTHandler(async () => {
 			this.logger.logLivepush('Cleaning up device...');
 			await Promise.all(
 				_.map(this.containers, (container) => {
