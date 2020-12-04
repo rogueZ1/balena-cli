@@ -22,7 +22,7 @@ import * as cf from '../../utils/common-flags';
 import { getBalenaSdk, stripIndent } from '../../utils/lazy';
 
 interface FlagsDef {
-	yes?: boolean;
+	yes: boolean;
 	help: void;
 }
 
@@ -79,7 +79,7 @@ the device will not be charged again until it comes online.
 Are you sure you want to deactivate device ${uuid} ?`;
 
 		// Confirm
-		await patterns.confirm(!!options.yes, deactivationWarning);
+		await patterns.confirm(options.yes, deactivationWarning);
 		// Deactivate
 		await balena.models.device.deactivate(uuid);
 	}
