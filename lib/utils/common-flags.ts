@@ -60,6 +60,7 @@ export const verbose: IBooleanFlag<boolean> = flags.boolean({
 export const yes: IBooleanFlag<boolean> = flags.boolean({
 	char: 'y',
 	description: 'answer "yes" to all questions (non interactive use)',
+	default: false,
 });
 
 export const force: IBooleanFlag<boolean> = flags.boolean({
