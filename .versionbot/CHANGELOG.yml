@@ -1,4 +1,41 @@
 - commits:
+    - subject: 'Livepush: Extend CTRL-C support over build phase, fix CTRL-C on Windows'
+      hash: 31c1ece106d1d9cd7cc4e49fe6fcdf44a214fce9
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Paulo Castro
+      nested: []
+    - subject: 'Livepush, logs: Automatically reconnect on ''Connection to device lost'''
+      hash: bccadb951228a903f165d155fd67980e8f553b6f
+      body: ''
+      footer:
+        Change-type: minor
+        change-type: minor
+      author: Paulo Castro
+      nested: []
+    - subject: 'logs: Fix CTRL-C ignored on Windows (PowerShell, MSYS, Git for Windows)'
+      hash: fc051dc29b236b4f08f0c26a7abb552aa510071b
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Paulo Castro
+      nested: []
+    - subject: 'Livepush: Fix process not exiting on "Connection to device lost"'
+      hash: df1dcd9f88b2b5a91c3883cd0a76f04b08564dd4
+      body: ''
+      footer:
+        Resolves: '#1828'
+        resolves: '#1828'
+        Change-type: patch
+        change-type: patch
+      author: Paulo Castro
+      nested: []
+  version: 12.30.0
+  date: 2020-12-06T23:48:18.227Z
+- commits:
     - subject: 'devices: Don''t truncate device UUID to 7 chars when --json is used'
       hash: aae6aff3e900c058eb746265f4ee95f677509791
       body: ''
