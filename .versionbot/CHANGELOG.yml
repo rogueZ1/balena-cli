@@ -1,4 +1,57 @@
 - commits:
+    - subject: 'errors: Remove BalenaAmbiguousDevice error message'
+      hash: 182eb35f13f950e0699d81297dbbf19fa09d496a
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+      author: Marios Balamatsias
+      nested: []
+    - subject: 'deactivate: Remove yes flag casting'
+      hash: 691666dac1ce65f5cd5c409aed87d4d67dc998fe
+      body: ''
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+      author: Marios Balamatsias
+      nested: []
+    - subject: 'common-flags: Add default false on yes flag'
+      hash: a7a71bc35fecb9e0ba754783ee36fec7ccec1a08
+      body: ''
+      footer:
+        Change-type: minor
+        change-type: minor
+        Signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+      author: Marios Balamatsias
+      nested: []
+    - subject: Fix majority of comments
+      hash: bb76ecfed3494b9d40c3c25e018719a65448f301
+      body: ''
+      footer:
+        Signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+      author: Marios Balamatsias
+      nested: []
+    - subject: 'device: Add deactivate command'
+      hash: 2448d11f5143111f328e3b158928f9370372a5e1
+      body: ''
+      footer:
+        Resolves: '#1545'
+        resolves: '#1545'
+        Change-type: minor
+        change-type: minor
+        Signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+        signed-off-by: Marios Balamatsias <mbalamatsias@gmail.com>
+      author: Marios Balamatsias
+      nested: []
+  version: 13.0.0
+  date: 2020-12-07T09:34:34.337Z
+- commits:
     - subject: 'devices: Don''t truncate device UUID to 7 chars when --json is used'
       hash: aae6aff3e900c058eb746265f4ee95f677509791
       body: ''

@@ -1,6 +1,6 @@
 {
   "name": "balena-cli",
-  "version": "12.29.1",
+  "version": "13.0.0",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
@@ -5735,6 +5735,7 @@
         "udif": "^0.15.7",
         "unbzip2-stream": "github:balena-io-modules/unbzip2-stream#942fc218013c14adab01cf693b0500cf6ac83193",
         "unzip-stream": "^0.3.0",
+        "winusb-driver-generator": "^1.2.3",
         "xxhash": "^0.3.0",
         "yauzl": "^2.9.2"
       },
@@ -16165,6 +16166,17 @@
       "dev": true,
       "requires": {
         "execa": "^1.0.0"
+      }
+    },
+    "winusb-driver-generator": {
+      "version": "1.2.7",
+      "resolved": "https://registry.npmjs.org/winusb-driver-generator/-/winusb-driver-generator-1.2.7.tgz",
+      "integrity": "sha512-NMRpH61jvvU32kGp7TcB0uzC2vxbTNpdX8kkGn4RLafycm5bKRKNzIqinnshs8G5Z7VFAMVACaCo1uPLslT3nw==",
+      "optional": true,
+      "requires": {
+        "bindings": "^1.3.0",
+        "nan": "^2.14.0",
+        "prebuild-install": "^5.2.2"
       }
     },
     "with-open-file": {
